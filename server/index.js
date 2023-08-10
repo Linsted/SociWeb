@@ -8,13 +8,14 @@ import morgan from "morgan";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+import register from "./controllers/auth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(helmet);
+app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 app.use(morgan('common'));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -34,7 +35,14 @@ const upload = multer({
     storage,
 });
 
-// app.post("auth/register", upload.single("picture"), register);
+//!  Delete this function //
+const testConsole = (req, res, next) => {
+    console.log('Test clg');
+    next();
+};
+
+app.post("/auth/register", testConsole, upload.single("picture"), register);
+
 
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL, {

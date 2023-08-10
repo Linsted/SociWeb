@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
         min: 5,
         max: 50,
     },
-    password: {
+    picturePath: {
         type: String,
         default: '',
     },
