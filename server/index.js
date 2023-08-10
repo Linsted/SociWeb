@@ -33,3 +33,17 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage,
 });
+
+// app.post("auth/register", upload.single("picture"), register);
+
+const PORT = process.env.PORT || 6001;
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server running. Use our API on port: ${PORT}`);
+    });
+})
+    .catch(err =>
+        console.log(`Server not running. Error message: ${err.message}`));
