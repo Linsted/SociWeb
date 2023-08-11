@@ -5,10 +5,9 @@ import express from "express";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import morgan from "morgan";
-import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
-import register from "./controllers/auth.js";
+import authRoute from './routes/authRoute.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,26 +22,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
-const storage = multer.diskStorage({
-    destination: (req, res, cb) => {
-        cb(null, 'public/assets')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
-const upload = multer({
-    storage,
-});
-
-//!  Delete this function //
-const testConsole = (req, res, next) => {
-    console.log('Test clg');
-    next();
-};
-
-app.post("/auth/register", testConsole, upload.single("picture"), register);
-
+app.use("/auth", authRoute);
 
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL, {

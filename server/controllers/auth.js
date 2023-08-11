@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 const register = async (req, res) => {
-    console.log(req.body);
+    console.log('register controller works');
     try {
         const { firstName, lastName, email, password, picturePath, friends, location, occupation } = req.body;
         const salt = await bcrypt.genSalt();
@@ -21,9 +21,6 @@ const register = async (req, res) => {
             viewedProfile: Math.floor(Math.random() * 10000),
             impressions: Math.floor(Math.random() * 10000),
         });
-
-        console.log(newUser)
-
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
     } catch (error) {
