@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import { User, JoiScheme } from '../models/User.js';
 
 export const register = async (req, res) => {
     try {
@@ -10,6 +10,12 @@ export const register = async (req, res) => {
         if (user) {
             return res.status(409).json({ message: 'User already exists' });
         };
+
+        const { error } = JoiScheme.register.validate(req.body);
+        if (error) {
+            return res.status(400).json({ message: "Missing required field" });
+        };
+
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
@@ -32,6 +38,11 @@ export const login = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ error: "User not found" })
+        };
+
+        const { error } = JoiScheme.login.validate(req.body);
+        if (error) {
+            return res.status(400).json({ message: "Missing required field" });
         };
 
         const isMatch = bcrypt.compare(password, user.password);
