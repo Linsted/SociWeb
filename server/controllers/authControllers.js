@@ -3,21 +3,19 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 export const register = async (req, res) => {
-    console.log('register controller works');
     try {
-        const { firstName, lastName, email, password, picturePath, friends, location, occupation } = req.body;
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(409).json({ message: 'User already exists' });
+        };
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-            firstName,
-            lastName,
-            email,
+            ...req.body,
             password: passwordHash,
-            picturePath,
-            friends,
-            location,
-            occupation,
             viewedProfile: Math.floor(Math.random() * 10000),
             impressions: Math.floor(Math.random() * 10000),
         });
