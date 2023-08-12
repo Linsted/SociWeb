@@ -6,14 +6,14 @@ export const register = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.status(409).json({ message: 'User already exists' });
-        };
-
         const { error } = JoiScheme.register.validate(req.body);
         if (error) {
             return res.status(400).json({ message: "Missing required field" });
+        };
+
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(409).json({ message: 'User already exists' });
         };
 
         const salt = await bcrypt.genSalt();
@@ -37,7 +37,7 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ error: "User not found" })
+            return res.status(401).json({ error: "Email or password not found" })
         };
 
         const { error } = JoiScheme.login.validate(req.body);

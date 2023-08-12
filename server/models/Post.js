@@ -31,6 +31,12 @@ const PostSchema = mongoose.Schema(
     { timestamps: true }
 );
 
-const Post = mongoose.model('Post', PostSchema);
+export const JoiScheme = {
+    createPost: Joi.object({
+        userId: Joi.string().required(),
+        description: Joi.string(),
+        picturePath: Joi.string()
+    }),
+}
 
-export default Post;
+export const Post = mongoose.model('Post', PostSchema);
