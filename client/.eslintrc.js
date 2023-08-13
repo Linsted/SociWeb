@@ -21,6 +21,13 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rules: {
+  settings: {
+    'import/resolver': {
+      'node': {
+        'paths': ['src'],
+        'extensions': ['.js', '.ts', '.d.ts', '.tsx']
+      },
+    },
   },
+  rules: {},
 };
