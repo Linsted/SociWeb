@@ -30,33 +30,45 @@ export const createPost = async (req, res) => {
 
         await newPost.save();
 
-        const post = await Post.find();
+        const posts = await Post.find();
 
-        res.status(201).json(post);
-
-    } catch (error) {
-        res.status(409).json({ message: err.message });
-    }
-};
-
-export const getFeedPosts = (req, res) => {
-    try {
+        res.status(201).json(posts);
 
     } catch (error) {
         res.status(409).json({ message: err.message });
     }
 };
 
-export const getUserPosts = (req, res) => {
+export const getFeedPosts = async (req, res) => {
     try {
+        const posts = await Post.find();
 
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(404).json({ message: err.message });
+    }
+};
+
+export const getUserPosts = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const userPosts = await Post.find({ userId });
+        if (!userPosts) {
+            return res.status(404).json({
+                message: "User or posts not found"
+            })
+        };
+
+        res.status(200).json(userPosts);
     } catch (error) {
         res.status(409).json({ message: err.message });
     }
 };
 
-export const likePost = (req, res) => {
+export const likePost = async (req, res) => {
     try {
+
 
     } catch (error) {
         res.status(409).json({ message: err.message });
