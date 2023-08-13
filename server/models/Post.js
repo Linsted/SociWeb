@@ -37,6 +37,9 @@ export const JoiScheme = {
         description: Joi.string(),
         picturePath: Joi.string()
     }),
+    likePost: Joi.object({
+        userId: Joi.string().required(),
+    })
 }
 
 export const Post = mongoose.model('Post', PostSchema);
