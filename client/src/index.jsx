@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import storage from 'redux-persist/lib/storage';
 import {
 	persistStore,
 	persistReducer,
@@ -14,9 +13,10 @@ import {
 	PURGE,
 	REGISTER,
 } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react';
-import App from './App.jsx';
 import authReducer from './state';
+import App from './App.jsx';
 
 const persistConfig = { key: 'root', storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
